@@ -5,7 +5,10 @@ const Navbar = () => {
   const { data } = useSession();
   return (
     <div className={styles.navbar}>
-      <button className={styles.navbar__button} onClick={() => (data ? signOut() : signIn())}>
+      <button
+        className={styles.navbar__button}
+        onClick={() => (data ? signOut() : signIn())}
+      >
         {data ? "Sign out" : "Sign in"}
       </button>
     </div>
