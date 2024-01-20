@@ -1,13 +1,13 @@
 import AdminLayout from "@/components/layouts/AdminLayout";
 
-const ProductsAdminView = () => {
+const ProfileAdminView = () => {
   return (
     <AdminLayout>
       <div>
-        <div>Admin Products Page</div>
+        <div>Admin Profile Page</div>
       </div>
     </AdminLayout>
   );
 };
 
-export default ProductsAdminView;
+export default ProfileAdminView;
