@@ -21,6 +21,20 @@
     &__action {
       display: flex;
       gap: 10px;
+      &__edit {
+        background-color: rgb(255, 174, 0);
+        padding: 15px;
+        i {
+          font-size: 20px;
+        }
+      }
+      &__delete {
+        background-color: #f00;
+        padding: 15px;
+        i {
+          font-size: 20px;
+        }
+      }
     }
   }
 }
