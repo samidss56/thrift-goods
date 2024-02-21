@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
 import { convertIDR } from "@/utils/currency";
 import { Product } from "@/types/product.type";
+import ModalAddProduct from "./ModalAddProduct";
 
 type Proptypes = {
   products: Product[];
@@ -14,6 +15,7 @@ type Proptypes = {
 const ProductsAdminView = (props: Proptypes) => {
   const { products, setToaster } = props;
   const [productsData, setProductsData] = useState<Product[]>([]);
+  const [modalAddProduct, setModalAddProduct] = useState(false);
 
   useEffect(() => {
     setProductsData(products);
@@ -24,6 +26,13 @@ const ProductsAdminView = (props: Proptypes) => {
       <AdminLayout>
         <div className={styles.products}>
           <h1>Product Management</h1>
+          <Button
+            type="button"
+            className={styles.products__add}
+            onClick={() => setModalAddProduct(true)}
+          >
+            <i className="bx bx-plus">Add Product</i>
+          </Button>
           <table className={styles.products__table}>
             <thead>
               <tr>
@@ -98,6 +107,13 @@ const ProductsAdminView = (props: Proptypes) => {
           </table>
         </div>
       </AdminLayout>
+      {modalAddProduct && (
+        <ModalAddProduct
+          setModalAddProduct={setModalAddProduct}
+          setToaster={setToaster}
+          setProductsData={setProductsData}
+        />
+      )}
     </>
   );
 };
