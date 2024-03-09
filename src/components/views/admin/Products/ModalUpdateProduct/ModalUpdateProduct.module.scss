@@ -18,7 +18,7 @@
       padding: 10px 15px;
       font-size: 14px;
       // border-radius: 20px;
-      margin: 20px 0;
+      margin: 20px 0 30px;
     }
   }
   &__image {
@@ -26,16 +26,11 @@
     align-items: center;
     gap: 20px;
     margin: 10px 0 20px 0;
-    &__preview,
-    &__placeholder {
+    &__preview {
       width: 15%;
       aspect-ratio: 1 / 1;
       height: auto;
       border-radius: 5px;
-      background-color: #eee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
   }
 }
