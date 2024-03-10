@@ -25,8 +25,6 @@ const ModalUpdateProduct = (props: Proptypes) => {
   const [stockCount, setStockCount] = useState(updatedProduct.stock);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const session: any = useSession();
-  console.log(updatedProduct);
-
   const handleStock = (e: any, i: number, type: string) => {
     const newStockCount: any = [...stockCount];
     newStockCount[i][type] = e.target.value;

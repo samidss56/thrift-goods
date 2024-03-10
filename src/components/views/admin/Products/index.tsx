@@ -7,6 +7,7 @@ import { convertIDR } from "@/utils/currency";
 import { Product } from "@/types/product.type";
 import ModalAddProduct from "./ModalAddProduct";
 import ModalUpdateProduct from "./ModalUpdateProduct";
+import ModalDeleteProduct from "./ModalDeleteProduct";
 
 type Proptypes = {
   products: Product[];
@@ -18,6 +19,7 @@ const ProductsAdminView = (props: Proptypes) => {
   const [productsData, setProductsData] = useState<Product[]>([]);
   const [modalAddProduct, setModalAddProduct] = useState(false);
   const [updatedProduct, setUpdatedProduct] = useState<Product | {}>({});
+  const [deletedProduct, setDeletedProduct] = useState<Product | {}>({});
 
   useEffect(() => {
     setProductsData(products);
@@ -86,6 +88,7 @@ const ProductsAdminView = (props: Proptypes) => {
                           type="button"
                           variant="primary"
                           className={styles.products__table__action__delete}
+                          onClick={() => setDeletedProduct(product)}
                         >
                           <i className="bx bxs-trash" />
                         </Button>
@@ -121,6 +124,14 @@ const ProductsAdminView = (props: Proptypes) => {
         <ModalUpdateProduct
           setUpdatedProduct={setUpdatedProduct}
           updatedProduct={updatedProduct}
+          setToaster={setToaster}
+          setProductsData={setProductsData}
+        />
+      )}
+      {Object.keys(deletedProduct).length > 0 && (
+        <ModalDeleteProduct
+          setDeletedProduct={setDeletedProduct}
+          deletedProduct={deletedProduct}
           setToaster={setToaster}
           setProductsData={setProductsData}
         />
