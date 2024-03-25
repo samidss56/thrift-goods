@@ -3,6 +3,7 @@ import styles from "./Select.module.scss";
 type Option = {
   label: string;
   value: string;
+  selected?: boolean;
 };
 
 type Proptypes = {
@@ -10,7 +11,7 @@ type Proptypes = {
   name: string;
   defaultValue?: string;
   disabled?: boolean;
-  options: Option[];
+  options: Option[] | any;
 };
 
 const Select = (props: Proptypes) => {
@@ -25,8 +26,12 @@ const Select = (props: Proptypes) => {
         disabled={disabled}
         className={styles.container__select}
       >
-        {options.map((option) => (
-          <option key={option.label} value={option.value}>
+        {options.map((option: Option) => (
+          <option
+            key={option.label}
+            value={option.value}
+            selected={option.selected}
+          >
             {option.label}
           </option>
         ))}
