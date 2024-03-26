@@ -5,6 +5,7 @@ import { convertIDR } from "@/utils/currency";
 import Select from "@/components/ui/Select";
 import Input from "@/components/ui/Input";
 import { Fragment } from "react";
+import Button from "@/components/ui/Button";
 
 type Proptypes = {
   products: Product[];
@@ -13,8 +14,8 @@ type Proptypes = {
 
 const CartView = (props: Proptypes) => {
   const { products, cart } = props;
-  console.log(cart);
-  console.log(products);
+  // console.log(cart);
+  // console.log(products);
 
   const getProduct = (id: string) => {
     const product = products.find((product) => product.id === id);
@@ -36,6 +37,18 @@ const CartView = (props: Proptypes) => {
     );
     const data = options?.filter((option) => option !== undefined);
     return data;
+  };
+
+  const getTotalPrice = () => {
+    const total = cart.reduce(
+      (acc: number, item: { id: string; size: string; qty: number }) => {
+        const product: any = getProduct(item.id);
+        return (acc += parseInt(product?.price) * item.qty);
+      },
+      0
+    );
+
+    return total;
   };
 
   return (
@@ -86,6 +99,12 @@ const CartView = (props: Proptypes) => {
                       />
                     </label>
                   </div>
+                  <button
+                    type="button"
+                    className={styles.cart__main__list__item__info__delete}
+                  >
+                    <i className="bx bxs-trash" />
+                  </button>
                 </div>
                 <h4 className={styles.cart__main__list__item__price}>
                   {convertIDR(getProduct(item.id)?.price)}
@@ -97,7 +116,32 @@ const CartView = (props: Proptypes) => {
         </div>
       </div>
       <div className={styles.cart__sumarry}>
-        <h1 className={styles.cart__sumarry__title}>Sumarry</h1>
+        <h1 className={styles.cart__sumarry__title}>Summary</h1>
+        <div className={styles.cart__sumarry__item}>
+          <h4>Subtotal</h4>
+          <p>{convertIDR(getTotalPrice())}</p>
+        </div>
+        <div className={styles.cart__sumarry__item}>
+          <h4>Delivery</h4>
+          <p>{convertIDR(0)}</p>
+        </div>
+        <div className={styles.cart__sumarry__item}>
+          <h4>Tax</h4>
+          <p>{convertIDR(0)}</p>
+        </div>
+        <hr />
+        <div className={styles.cart__sumarry__item}>
+          <h4>Total</h4>
+          <p>{convertIDR(getTotalPrice())}</p>
+        </div>
+        <hr />
+        <Button
+          variant="primary"
+          type="button"
+          className={styles.cart__sumarry__button}
+        >
+          Checkout
+        </Button>
       </div>
     </div>
   );

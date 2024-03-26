@@ -61,6 +61,11 @@
         box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
         padding: 40px;
         border-radius: 10px;
+        &__form {
+          &__input {
+            margin: 20px 0;
+          }
+        }
         &__button {
           width: 100%;
         }
@@ -70,6 +75,11 @@
         box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
         border-radius: 10px;
         padding: 40px;
+        &__form {
+          &__input {
+            margin: 20px 0;
+          }
+        }
         &__button {
           width: 100%;
         }

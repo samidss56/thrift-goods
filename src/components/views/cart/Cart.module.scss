@@ -1,9 +1,18 @@
 .cart {
-  padding: 100px 20vw;
+  padding: 100px 10vw;
   display: flex;
   gap: 30px;
   &__sumarry {
     width: 30%;
+    &__item {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+    &__button {
+      width: 100%;
+      margin-top: 20px;
+    }
   }
   &__main {
     width: 70%;
@@ -46,10 +55,20 @@
               gap: 10px;
               &__input {
                 input {
-                  width: 100px;
+                  width: 60px;
+                  text-align: center;
                 }
               }
             }
+          }
+          &__delete {
+            cursor: pointer;
+            color: #8f8f8f;
+            margin-top: 20px;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            font-size: 24px;
           }
         }
         &__price {

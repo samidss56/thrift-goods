@@ -62,8 +62,18 @@ const LoginView = ({
       setToaster={setToaster}
     >
       <form onSubmit={handleSubmit}>
-        <Input label="Email" name="email" type="email" />
-        <Input label="Password" name="password" type="password" />
+        <Input
+          label="Email"
+          name="email"
+          type="email"
+          className={styles.login__input}
+        />
+        <Input
+          label="Password"
+          name="password"
+          type="password"
+          className={styles.login__input}
+        />
         <Button
           type="submit"
           variant="primary"

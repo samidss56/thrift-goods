@@ -24,7 +24,11 @@ const Input = (props: Proptypes) => {
   } = props;
   return (
     <div className={`${styles.container} ${className}`}>
-      {label && <label htmlFor={name}>{label}</label>}
+      {label && (
+        <label htmlFor={name} className={styles.container__label}>
+          {label}
+        </label>
+      )}
       <input
         name={name}
         id={name}
