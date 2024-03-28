@@ -44,6 +44,7 @@ const ModalUpdateProduct = (props: Proptypes) => {
     const data = {
       name: form.name.value,
       price: parseInt(form.price.value),
+      description: form.description.value,
       category: form.category.value,
       status: form.status.value,
       stock: stock,
@@ -123,6 +124,14 @@ const ModalUpdateProduct = (props: Proptypes) => {
           type="number"
           placeholder="Insert product price"
           defaultValue={updatedProduct.price}
+          className={styles.form__input}
+        />
+        <Input
+          label="Description"
+          name="description"
+          type="text"
+          placeholder="Insert product description"
+          defaultValue={updatedProduct.description}
           className={styles.form__input}
         />
         <Select

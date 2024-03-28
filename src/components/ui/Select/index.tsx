@@ -30,7 +30,7 @@ const Select = (props: Proptypes) => {
           disabled={disabled}
           className={styles.select__container__input}
         >
-          {options.map((option: Option) => (
+          {options?.map((option: Option) => (
             <option
               key={option.label}
               value={option.value}
