@@ -1,5 +1,9 @@
 .modal {
   &__title {
     margin-bottom: 20px;
+    font-weight: 400;
+    &__fullname {
+      font-weight: 700;
+    }
   }
 }

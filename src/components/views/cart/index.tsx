@@ -14,8 +14,6 @@ type Proptypes = {
 
 const CartView = (props: Proptypes) => {
   const { products, cart } = props;
-  // console.log(cart);
-  // console.log(products);
 
   const getProduct = (id: string) => {
     const product = products.find((product) => product.id === id);

@@ -79,7 +79,6 @@ const UsersAdminView = (props: Proptypes) => {
           setUpdatedUser={setUpdatedUser}
           setUsersData={setUsersData}
           setToaster={setToaster}
-          session={session}
         />
       )}
       {Object.keys(deletedUser).length && (
@@ -88,7 +87,6 @@ const UsersAdminView = (props: Proptypes) => {
           setDeletedUser={setDeletedUser}
           setUsersData={setUsersData}
           setToaster={setToaster}
-          session={session}
         />
       )}
     </>

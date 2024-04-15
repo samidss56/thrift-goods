@@ -1,9 +1,7 @@
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
-import userServices from "@/services/user";
 import styles from "./ModalDeleteProduct.module.scss";
 import { Dispatch, SetStateAction, useState } from "react";
-import { useSession } from "next-auth/react";
 import productServices from "@/services/product";
 import { Product } from "@/types/product.type";
 import { deleteFile } from "@/lib/firebase/service";
@@ -18,14 +16,10 @@ type Proptypes = {
 const ModalDeleteProduct = (props: Proptypes) => {
   const { deletedProduct, setDeletedProduct, setProductsData, setToaster } =
     props;
-  const session: any = useSession();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
-    const result = await productServices.deleteProduct(
-      deletedProduct.id,
-      session.data?.accessToken
-    );
+    const result = await productServices.deleteProduct(deletedProduct.id);
     if (result.status === 200) {
       setIsLoading(false);
       deleteFile(
@@ -55,7 +49,8 @@ const ModalDeleteProduct = (props: Proptypes) => {
   return (
     <Modal onClose={() => setDeletedProduct({})}>
       <h2 className={styles.modal__title}>
-        {`Are you sure you want to delete product "${deletedProduct.name}" ?`}
+        Are you sure you want to delete product{" "}
+        <span className={styles.modal__title__name}>{`"${deletedProduct.name}"`}</span> ?
       </h2>
       <Button type="button" variant="primary" onClick={() => handleDelete()}>
         {isLoading ? "Deleting..." : "Yes, Delete"}
