@@ -1,21 +1,21 @@
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import styles from "./ModalDeleteProduct.module.scss";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import productServices from "@/services/product";
 import { Product } from "@/types/product.type";
 import { deleteFile } from "@/lib/firebase/service";
+import { ToasterContext } from "@/contexts/ToasterContext";
 
 type Proptypes = {
   setProductsData: Dispatch<SetStateAction<Product[]>>;
-  setToaster: Dispatch<SetStateAction<{}>>;
   deletedProduct: Product | any;
   setDeletedProduct: Dispatch<SetStateAction<{}>>;
 };
 
 const ModalDeleteProduct = (props: Proptypes) => {
-  const { deletedProduct, setDeletedProduct, setProductsData, setToaster } =
-    props;
+  const { deletedProduct, setDeletedProduct, setProductsData } = props;
+  const { setToaster } = useContext(ToasterContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
@@ -50,7 +50,10 @@ const ModalDeleteProduct = (props: Proptypes) => {
     <Modal onClose={() => setDeletedProduct({})}>
       <h2 className={styles.modal__title}>
         Are you sure you want to delete product{" "}
-        <span className={styles.modal__title__name}>{`"${deletedProduct.name}"`}</span> ?
+        <span
+          className={styles.modal__title__name}
+        >{`"${deletedProduct.name}"`}</span>{" "}
+        ?
       </h2>
       <Button type="button" variant="primary" onClick={() => handleDelete()}>
         {isLoading ? "Deleting..." : "Yes, Delete"}

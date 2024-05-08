@@ -5,18 +5,19 @@ import { convertIDR } from "@/utils/currency";
 import Button from "@/components/ui/Button";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useContext, useState } from "react";
 import userServices from "@/services/user";
+import { ToasterContext } from "@/contexts/ToasterContext";
 
 type PropTypes = {
   product: Product | any;
   cart: any;
   productId: string | string[] | undefined;
-  setToaster: Dispatch<SetStateAction<{}>>;
 };
 
 const DetailProductView = (props: PropTypes) => {
-  const { product, cart, productId, setToaster } = props;
+  const { product, cart, productId } = props;
+  const { setToaster } = useContext(ToasterContext);
   const { status }: any = useSession();
   const router = useRouter();
   const [selectedSize, setSelectedSize] = useState("");
@@ -24,12 +25,14 @@ const DetailProductView = (props: PropTypes) => {
   const handleAddToCart = async () => {
     if (selectedSize !== "") {
       let newCart = [];
+      const cartArray = Array.isArray(cart) ? cart : [];
+
       if (
-        cart.filter(
+        cartArray.filter(
           (item: any) => item.id === productId && item.size === selectedSize
         ).length > 0
       ) {
-        newCart = cart.map((item: any) => {
+        newCart = cartArray.map((item: any) => {
           if (item.id === productId && item.size === selectedSize) {
             item.qty += 1;
           }
@@ -37,7 +40,7 @@ const DetailProductView = (props: PropTypes) => {
         });
       } else {
         newCart = [
-          ...cart,
+          ...cartArray,
           {
             id: productId,
             size: selectedSize,
