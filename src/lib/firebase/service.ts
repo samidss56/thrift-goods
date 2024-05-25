@@ -120,9 +120,7 @@ export async function uploadFile(
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         },
-        (error) => {
-          console.log(error);
-        },
+        (error) => {},
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL: any) => {
             callback(true, downloadURL);
