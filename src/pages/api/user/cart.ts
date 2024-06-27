@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    verify(req, res, async (decoded: { id: string }) => {
+    verify(req, res, false, async (decoded: { id: string }) => {
       const user: any = await retrieveDataById("users", decoded.id);
       if (user) {
         user.id = decoded.id;
@@ -28,7 +28,7 @@ export default async function handler(
     });
   } else if (req.method === "PUT") {
     const { data } = req.body;
-    verify(req, res, async (decoded: { id: string }) => {
+    verify(req, res, false, async (decoded: { id: string }) => {
       await updateData("users", decoded.id, data, (result: boolean) => {
         if (result) {
           res.status(200).json({
