@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
+import { responseApiAcessDenied } from "./responseApi";
 
 export const verify = (
   req: NextApiRequest,
@@ -17,21 +18,11 @@ export const verify = (
         if (decoded && (isAdmin ? decoded.role === "admin" : true)) {
           callback(decoded);
         } else {
-          res.status(403).json({
-            status: false,
-            statusCode: 403,
-            message: "Access Denied",
-            data: [],
-          });
+          responseApiAcessDenied(res);
         }
       }
     );
   } else {
-    res.status(403).json({
-      status: false,
-      statusCode: 403,
-      message: "Access Denied",
-      data: [],
-    });
+    responseApiAcessDenied(res);
   }
 };

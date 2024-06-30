@@ -2,6 +2,12 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { retrieveDataById, updateData } from "@/lib/firebase/service";
 import { compare, hash } from "bcrypt";
 import { verify } from "@/utils/verifyToken";
+import {
+  responseApiFailed,
+  responseApiMethodNotAllowed,
+  responseApiNotFound,
+  responseApiSucess,
+} from "@/utils/responseApi";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,19 +18,9 @@ export default async function handler(
       const profile: any = await retrieveDataById("users", decoded.id);
       if (profile) {
         profile.id = decoded.id;
-        res.status(200).json({
-          status: true,
-          statusCode: 200,
-          message: "success",
-          data: profile,
-        });
+        responseApiSucess(res, profile);
       } else {
-        res.status(404).json({
-          status: false,
-          statusCode: 404,
-          message: "failed",
-          data: {},
-        });
+        responseApiNotFound(res);
       }
     });
   } else if (req.method === "PUT") {
@@ -36,11 +32,7 @@ export default async function handler(
           data.encryptedPassword
         );
         if (!passwordConfirm) {
-          res.status(400).json({
-            status: false,
-            statusCode: 400,
-            message: "failed",
-          });
+          responseApiFailed(res);
         }
         delete data.oldPassword;
         delete data.encryptedPassword;
@@ -48,19 +40,13 @@ export default async function handler(
       }
       await updateData("users", decoded.id, data, (result: boolean) => {
         if (result) {
-          res.status(200).json({
-            status: true,
-            statusCode: 200,
-            message: "success",
-          });
+          responseApiSucess(res);
         } else {
-          res.status(400).json({
-            status: false,
-            statusCode: 400,
-            message: "failed",
-          });
+          responseApiFailed(res);
         }
       });
     });
+  } else {
+    responseApiMethodNotAllowed(res);
   }
 }
