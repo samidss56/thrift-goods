@@ -1,5 +1,5 @@
 import { Product } from "@/types/product.type";
-import styles from "./Cart.module.scss";
+import styles from "./Checkout.module.scss";
 import Image from "next/image";
 import { convertIDR } from "@/utils/currency";
 import Select from "@/components/ui/Select";
@@ -10,9 +10,8 @@ import userServices from "@/services/user";
 import { ToasterContext } from "@/contexts/ToasterContext";
 import { useSession } from "next-auth/react";
 import productServices from "@/services/product";
-import Link from "next/link";
 
-const CartView = () => {
+const CheckoutView = () => {
   const { setToaster } = useContext(ToasterContext);
 
   const session: any = useSession();
@@ -98,116 +97,92 @@ const CartView = () => {
   };
 
   return (
-    <div className={styles.cart}>
-      <div className={styles.cart__main}>
-        <h1 className={styles.cart__main__title}>Cart</h1>
+    <div className={styles.checkout}>
+      <div className={styles.checkout__main}>
+        <h1 className={styles.checkout__main__title}>Checkout</h1>
         {cart.length > 0 ? (
-          <div className={styles.cart__main__list}>
+          <div className={styles.checkout__main__list}>
             {cart.map((item: { id: string; size: string; qty: number }) => (
               <Fragment key={`${item.id}-${item.size}`}>
-                <div className={styles.cart__main__list__item}>
+                <div className={styles.checkout__main__list__item}>
                   {getProduct(item.id)?.image && (
                     <Image
                       src={`${getProduct(item.id)?.image}`}
                       width={150}
                       height={150}
                       alt={`${item.id}-${item.size}`}
-                      className={styles.cart__main__list__item__image}
+                      className={styles.checkout__main__list__item__image}
                     />
                   )}
-                  <div className={styles.cart__main__list__item__info}>
-                    <h4 className={styles.cart__main__list__item__info__title}>
+                  <div className={styles.checkout__main__list__item__info}>
+                    <h4
+                      className={styles.checkout__main__list__item__info__title}
+                    >
                       {getProduct(item.id)?.name}
                     </h4>
-                    <p
-                      className={styles.cart__main__list__item__info__category}
+                    <div
+                      className={styles.checkout__main__list__item__info__data}
                     >
-                      {getProduct(item.id)?.category}
-                    </p>
-                    <div className={styles.cart__main__list__item__info__data}>
                       <label
                         className={
-                          styles.cart__main__list__item__info__data__size
+                          styles.checkout__main__list__item__info__data__size
                         }
                       >
-                        Size
-                        <Select
-                          name="size"
-                          options={getSizeOptions(item.id, item.size)}
-                          disabled
-                        />
+                        Size {item.size}
                       </label>
                       <label
                         className={
-                          styles.cart__main__list__item__info__data__qty
+                          styles.checkout__main__list__item__info__data__qty
                         }
                       >
-                        Quantity
-                        <Input
-                          className={
-                            styles.cart__main__list__item__info__data__qty__input
-                          }
-                          name="qty"
-                          type="number"
-                          defaultValue={item.qty}
-                          disabled
-                        />
+                        Quantity {item.qty}
                       </label>
                     </div>
-                    <button
-                      type="button"
-                      className={styles.cart__main__list__item__info__delete}
-                      onClick={() => handleDeleteCart(item.id, item.size)}
-                    >
-                      <i className="bx bxs-trash" />
-                    </button>
                   </div>
-                  <h4 className={styles.cart__main__list__item__price}>
+                  <h4 className={styles.checkout__main__list__item__price}>
                     {convertIDR(getProduct(item.id)?.price)}
                   </h4>
                 </div>
-                <hr className={styles.cart__main__list__divider} />
+                <hr className={styles.checkout__main__list__divider} />
               </Fragment>
             ))}
           </div>
         ) : (
-          <div className={styles.cart__main__empty}>
-            <h1 className={styles.cart__main__title}>Your cart is empty</h1>
+          <div className={styles.checkout__main__empty}>
+            <h1 className={styles.checkout__main__title}>Your cart is empty</h1>
           </div>
         )}
       </div>
-      <div className={styles.cart__sumarry}>
-        <h1 className={styles.cart__sumarry__title}>Summary</h1>
-        <div className={styles.cart__sumarry__item}>
+      <div className={styles.checkout__sumarry}>
+        <h1 className={styles.checkout__sumarry__title}>Summary</h1>
+        <div className={styles.checkout__sumarry__item}>
           <h4>Subtotal</h4>
           <p>{convertIDR(getTotalPrice())}</p>
         </div>
-        <div className={styles.cart__sumarry__item}>
+        <div className={styles.checkout__sumarry__item}>
           <h4>Delivery</h4>
           <p>{convertIDR(0)}</p>
         </div>
-        <div className={styles.cart__sumarry__item}>
+        <div className={styles.checkout__sumarry__item}>
           <h4>Tax</h4>
           <p>{convertIDR(0)}</p>
         </div>
         <hr />
-        <div className={styles.cart__sumarry__item}>
+        <div className={styles.checkout__sumarry__item}>
           <h4>Total</h4>
           <p>{convertIDR(getTotalPrice())}</p>
         </div>
         <hr />
-        <Link href="/checkout">
-          <Button
-            variant="primary"
-            type="button"
-            className={styles.cart__sumarry__button}
-          >
-            Checkout
-          </Button>
-        </Link>
+        <Button
+          variant="primary"
+          type="button"
+          className={styles.checkout__sumarry__button}
+        >
+          Checkout
+        </Button>
       </div>
     </div>
   );
 };
 
-export default CartView;
+export default CheckoutView;

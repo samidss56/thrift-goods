@@ -17,7 +17,11 @@ export default async function handler(
       const user: any = await retrieveDataById("users", decoded.id);
       if (user) {
         user.id = decoded.id;
-        responseApiSucess(res, user.carts);
+        if (user.carts) {
+          responseApiSucess(res, user.carts);
+        } else {
+          responseApiSucess(res, []);
+        }
       } else {
         responseApiNotFound(res);
       }
