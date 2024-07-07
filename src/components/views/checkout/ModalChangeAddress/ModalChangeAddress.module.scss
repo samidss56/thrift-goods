@@ -1,0 +1,28 @@
+.modal {
+  &__title {
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+  &__address {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    &__title {
+      font-size: 18px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+    }
+    &__selected {
+      &__note {
+        margin-bottom: 20px;
+      }
+    }
+    &--active {
+      border: 1px solid #010101;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    }
+  }
+}

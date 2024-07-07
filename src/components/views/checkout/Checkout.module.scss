@@ -16,12 +16,39 @@
   }
   &__main {
     width: 70%;
+    &__address {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+      &__title {
+        font-size: 18px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+      }
+      &__selected {
+        &__note {
+          margin-bottom: 20px;
+        }
+      }
+    }
     &__list {
       width: 100%;
       margin-top: 20px;
       display: flex;
       flex-direction: column;
       gap: 20px;
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      &__title {
+        font-size: 18px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+      }
       &__item {
         width: 100%;
         display: flex;
