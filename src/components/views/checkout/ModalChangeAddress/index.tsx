@@ -1,9 +1,17 @@
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import styles from "./ModalChangeAddress.module.scss";
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import Input from "@/components/ui/Input";
 import TextArea from "@/components/ui/TextArea";
+import userServices from "@/services/user";
+import { ToasterContext } from "@/contexts/ToasterContext";
 
 type Proptypes = {
   address: any;
@@ -15,8 +23,12 @@ type Proptypes = {
 const ModalChangeAddress = (props: Proptypes) => {
   const { address, setChangeAddress, setSelectedAdress, selectedAddress } =
     props;
+  const { setToaster } = useContext(ToasterContext);
 
-  const handleChangeAddress = (e: FormEvent) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isAddNew, setIsAddNew] = useState(false);
+
+  const handleChangeAddress = async (e: FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const data = {
@@ -26,6 +38,23 @@ const ModalChangeAddress = (props: Proptypes) => {
       note: form.note.value,
     };
     console.log(data);
+    try {
+      const result = await userServices.updateProfile(data);
+      if (result.status === 200) {
+        setIsLoading(false);
+        form.reset();
+        setToaster({
+          variant: "success",
+          message: "Success Change Password",
+        });
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setToaster({
+        variant: "danger",
+        message: "Failed Change Password",
+      });
+    }
   };
 
   return (
@@ -48,36 +77,50 @@ const ModalChangeAddress = (props: Proptypes) => {
       ))}
       <Button
         className={styles.modal__button}
-        onClick={() => setChangeAddress(true)}
+        onClick={() => setIsAddNew(!isAddNew)}
         type="button"
       >
-        Add New Address
+        {isAddNew ? "Cancel" : "Add New Address"}
       </Button>
-      <div className={styles.modal__form}>
-        <form onSubmit={handleChangeAddress}>
-          <Input
-            type="text"
-            name="recipient"
-            label="Recipient"
-            placeholder="Insert recipient"
-          />
-          <Input
-            type="text"
-            name="phone"
-            label="Recipient phone"
-            placeholder="Insert recipient phone"
-          />
-          <TextArea
-            name="addressLine"
-            label="Address Line"
-            placeholder="Insert address line"
-          />
-          <TextArea name="note" label="Note" placeholder="Insert note" />
-          <Button className={styles.modal__button} type="submit">
-            Save
-          </Button>
-        </form>
-      </div>
+      {isAddNew && (
+        <div className={styles.modal__form}>
+          <form
+            className={styles.modal__form__group}
+            onSubmit={handleChangeAddress}
+          >
+            <Input
+              type="text"
+              name="recipient"
+              label="Recipient"
+              placeholder="Insert recipient"
+            />
+            <Input
+              type="text"
+              name="phone"
+              label="Recipient phone"
+              placeholder="Insert recipient phone"
+            />
+            <TextArea
+              name="addressLine"
+              label="Address Line"
+              placeholder="Insert address line"
+            />
+            <Input
+              type="text"
+              name="note"
+              label="Note"
+              placeholder="Insert note"
+            />
+            <Button
+              className={styles.modal__button}
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Loading..." : "Submit"}
+            </Button>
+          </form>
+        </div>
+      )}
     </Modal>
   );
 };

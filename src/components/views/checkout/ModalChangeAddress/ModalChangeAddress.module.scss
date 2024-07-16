@@ -31,5 +31,10 @@
   }
   &__form {
     margin: 20px 0;
+    &__group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
   }
 }
