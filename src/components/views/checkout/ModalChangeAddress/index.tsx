@@ -14,45 +14,91 @@ import userServices from "@/services/user";
 import { ToasterContext } from "@/contexts/ToasterContext";
 
 type Proptypes = {
-  address: any;
+  profile: any;
   setChangeAddress: Dispatch<SetStateAction<boolean>>;
   setSelectedAdress: Dispatch<SetStateAction<number>>;
+  setProfile: Dispatch<SetStateAction<{}>>;
   selectedAddress: number;
 };
 
 const ModalChangeAddress = (props: Proptypes) => {
-  const { address, setChangeAddress, setSelectedAdress, selectedAddress } =
-    props;
+  const {
+    profile,
+    setProfile,
+    setChangeAddress,
+    setSelectedAdress,
+    selectedAddress,
+  } = props;
   const { setToaster } = useContext(ToasterContext);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isAddNew, setIsAddNew] = useState(false);
 
-  const handleChangeAddress = async (e: FormEvent) => {
+  const handleAddAddress = async (e: FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const data = {
-      recipient: form.recipient.value,
-      phone: form.phone.value,
-      addressLine: form.addressLine.value,
-      note: form.note.value,
+      address: [
+        ...profile.address,
+        {
+          recipient: form.recipient.value,
+          phone: form.phone.value,
+          addressLine: form.addressLine.value,
+          note: form.note.value,
+          isMain: false,
+        },
+      ],
     };
-    console.log(data);
+    // console.log(data);
     try {
       const result = await userServices.updateProfile(data);
       if (result.status === 200) {
         setIsLoading(false);
+        setIsAddNew(false);
+        setProfile({
+          ...profile,
+          address: data.address,
+        });
         form.reset();
         setToaster({
           variant: "success",
-          message: "Success Change Password",
+          message: "Success Add New Address",
         });
       }
     } catch (error) {
       setIsLoading(false);
       setToaster({
         variant: "danger",
-        message: "Failed Change Password",
+        message: "Failed Add New Address",
+      });
+    }
+  };
+
+  const handleDeleteAddress = async (id: number) => {
+    const address = profile.address;
+    address.splice(id, 1);
+    const data = {
+      address,
+    };
+    try {
+      const result = await userServices.updateProfile(data);
+      if (result.status === 200) {
+        setIsLoading(false);
+        setIsAddNew(false);
+        setProfile({
+          ...profile,
+          address: data.address,
+        });
+        setToaster({
+          variant: "success",
+          message: "Success Delete Address",
+        });
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setToaster({
+        variant: "danger",
+        message: "Failed Delete Address",
       });
     }
   };
@@ -60,17 +106,32 @@ const ModalChangeAddress = (props: Proptypes) => {
   return (
     <Modal onClose={() => setChangeAddress(false)}>
       <h2 className={styles.modal__title}>Change Shipping address ?</h2>
-      {address.map((item: any, id: number) => (
+      {profile.address.map((item: any, id: number) => (
         <div
           key={item.addressLine}
           className={`${styles.modal__address} ${
             id === selectedAddress && styles["modal__address--active"]
           }`}
-          onClick={() => setSelectedAdress(id)}
         >
-          <h4 className={styles.modal__address__title}>
-            {item.recipient} - {item.phone}
-          </h4>
+          <div
+            className={styles.modal__address__header}
+            onClick={() => {
+              setSelectedAdress(id);
+            }}
+          >
+            <h4 className={styles.modal__address__header__title}>
+              {item.recipient} - {item.phone}
+            </h4>
+            <Button
+              type="button"
+              className={styles.modal__address__header__action}
+              onClick={() => handleDeleteAddress(id)}
+              disabled={isLoading || id === selectedAddress}
+            >
+              <i className="bx bxs-trash" />
+            </Button>
+          </div>
+
           <p className={styles.modal__address__address}>{item.addressLine}</p>
           <p className={styles.modal__address__note}>Note : {item.note}</p>
         </div>
@@ -86,7 +147,7 @@ const ModalChangeAddress = (props: Proptypes) => {
         <div className={styles.modal__form}>
           <form
             className={styles.modal__form__group}
-            onSubmit={handleChangeAddress}
+            onSubmit={handleAddAddress}
           >
             <Input
               type="text"

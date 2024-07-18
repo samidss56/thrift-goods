@@ -9,11 +9,25 @@
     border-radius: 10px;
     padding: 20px;
     margin-top: 20px;
-    &__title {
-      font-size: 18px;
-      margin-bottom: 10px;
+    cursor: pointer;
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       border-bottom: 1px solid #ddd;
-      padding-bottom: 10px;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+      &__title {
+        font-size: 18px;
+      }
+      &__action {
+        cursor: pointer;
+        color: #8f8f8f;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        font-size: 24px;
+      }
     }
     &__selected {
       &__note {

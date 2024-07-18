@@ -181,7 +181,8 @@ const CheckoutView = () => {
       </div>
       {changeAddress && (
         <ModalChangeAddress
-          address={profile.address}
+          profile={profile}
+          setProfile={setProfile}
           setChangeAddress={setChangeAddress}
           setSelectedAdress={setSelectedAdress}
           selectedAddress={selectedAdress}
