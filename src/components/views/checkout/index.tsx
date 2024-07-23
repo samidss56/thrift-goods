@@ -24,11 +24,13 @@ const CheckoutView = () => {
   const getProfile = async (token: string) => {
     const { data } = await userServices.getProfile();
     setProfile(data.data);
-    data.data.address.filter((address: { isMain: boolean }, id: number) => {
-      if (address.isMain) {
-        setSelectedAdress(id);
-      }
-    });
+    if (data?.data?.address?.length > 0) {
+      data.data.address.filter((address: { isMain: boolean }, id: number) => {
+        if (address.isMain) {
+          setSelectedAdress(id);
+        }
+      });
+    }
   };
 
   const getAllProducts = async () => {
@@ -86,7 +88,11 @@ const CheckoutView = () => {
                   Change Address
                 </Button>
               </div>
-            ) : null}
+            ) : (
+              <Button type="button" onClick={() => setChangeAddress(true)}>
+                Add New Address
+              </Button>
+            )}
           </div>
           {profile?.carts?.length > 0 ? (
             <div className={styles.checkout__main__list}>

@@ -37,19 +37,33 @@ const ModalChangeAddress = (props: Proptypes) => {
   const handleAddAddress = async (e: FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-    const data = {
-      address: [
-        ...profile.address,
-        {
-          recipient: form.recipient.value,
-          phone: form.phone.value,
-          addressLine: form.addressLine.value,
-          note: form.note.value,
-          isMain: false,
-        },
-      ],
-    };
-    // console.log(data);
+    let data;
+    if (profile.address) {
+      data = {
+        address: [
+          ...profile.address,
+          {
+            recipient: form.recipient.value,
+            phone: form.phone.value,
+            addressLine: form.addressLine.value,
+            note: form.note.value,
+            isMain: false,
+          },
+        ],
+      };
+    } else {
+      data = {
+        address: [
+          {
+            recipient: form.recipient.value,
+            phone: form.phone.value,
+            addressLine: form.addressLine.value,
+            note: form.note.value,
+            isMain: true,
+          },
+        ],
+      };
+    }
     try {
       const result = await userServices.updateProfile(data);
       if (result.status === 200) {
@@ -105,8 +119,10 @@ const ModalChangeAddress = (props: Proptypes) => {
 
   return (
     <Modal onClose={() => setChangeAddress(false)}>
-      <h2 className={styles.modal__title}>Change Shipping address ?</h2>
-      {profile.address.map((item: any, id: number) => (
+      <h2 className={styles.modal__title}>
+        {profile?.address?.length > 0 ? "Change Address" : "Add New Address"}
+      </h2>
+      {profile?.address?.map((item: any, id: number) => (
         <div
           key={item.addressLine}
           className={`${styles.modal__address} ${
